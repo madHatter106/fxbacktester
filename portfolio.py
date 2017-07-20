@@ -17,7 +17,6 @@ class Portfolio():
     Result
         TimeStamp, equity curve, transaction cost trade record,
         Pandas DataFrame
-
     """
 
     __metaclass__ = ABCMeta
