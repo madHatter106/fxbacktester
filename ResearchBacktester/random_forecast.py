@@ -8,6 +8,7 @@ This file will make use of data downloaded from OANDA and stored as HDF5
 tables via pandas
 """
 
+
 class RandomForecastingStrategy(Strategy):
     """
     Demo that derives from Strategy to produce a set of signals that are randomly
@@ -81,7 +82,7 @@ class MarketOnOpenPortfolio(Portfolio):
         Creates a 'positions' DataFrame that longs/shorts 1 lot of the
         particular symbol based on the input from the signals dataframe.
         """
-        lot =
+        lot = 1.0
         positions = pd.DataFrame(index=signals.index).fillna(0.0)
         positions[self.symbol] = lot * signals['signal']
         return positions
@@ -97,5 +98,5 @@ class MarketOnOpenPortfolio(Portfolio):
 
         Returns the portfolio object for use elsewhere
         """
-        
-        portfolio = self.positions * self.bars['Open'])
+
+        portfolio = self.positions * self.bars['Open']
