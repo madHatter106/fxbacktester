@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
-from fxbacktester.strategy import Strategy
-from fxbacktester.portfolio import Portfolio
+from fxbacktester.ResearchBacktester.strategy import Strategy
+from fxbacktester.ResearchBacktester.portfolio import Portfolio
 
 """
 This file will make use of data downloaded from OANDA and stored as HDF5
@@ -98,5 +98,21 @@ class MarketOnOpenPortfolio(Portfolio):
 
         Returns the portfolio object for use elsewhere
         """
-
+        # Construct the portfolio DataFrame to use the same index
+    	# as 'positions' and with a set of 'trading orders' in the
+    	# 'pos_diff' object, assuming market open prices.
         portfolio = self.positions * self.bars['Open']
+        pos_diff = self.positions.diff()
+
+        # Create the 'holdings' and 'cash' series by running through
+        # the trades and adding/subtracting the relevant quantity from
+        # each column
+
+        portfolio['holdings'] = (self.positions * self.bars['Open']).sum(axis=1)
+        portfolio['cash'] = self.initial_capital - (pos_diff * self.bars['Open']).sum(axis=1).cumsum()
+
+        # Finalise the total and bar-based returns based on the 'cash'
+        # and 'holdings' figures for the portfolio
+        portfolio['total'] = portfolio['cash'] + portfolio['holdings']
+        portfolio['returns'] = portfolio['total'].pct_change()
+        return portfolio

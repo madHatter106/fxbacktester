@@ -1,7 +1,7 @@
 # backtest.py
 from abc import ABCMeta, abstractmethod
 
-class Strategy():
+class Strategy:
     """Strategy is an abstract base class providing an interface for
     all subsequent (inherited) trading strategies.
 
